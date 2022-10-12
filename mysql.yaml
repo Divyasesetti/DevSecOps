@@ -1,0 +1,50 @@
+---
+- hosts: all
+  become: yes
+  gather_facts: false
+  vars:
+    mysql_pass: 'silence'
+    user_pass: 'secret'
+  tasks:       
+    - name: update apt repo and cache
+      apt:
+        state: present
+        update_cache: yes
+ 
+    - name: install mysql server
+      shell: apt install -y mysql-server
+ 
+    - name: Install python3-pymysql library
+      shell: apt install python3-pymysql
+ 
+    - name: Start Mysql and enable service
+      service:
+        name: mysql
+        state: started
+        enabled: yes
+ 
+    - name: change the authentication plugiin of mysql root user to mysql_native_password
+      shell: mysql -u root -e 'UPDATE mysql.user SET plugin="mysql_native_password" where user="root" AND host="localhost"'
+ 
+    - name: set mysql root password
+      mysql_user:
+        login_host: 'localhost'
+        login_user: 'root'
+        login_password: ''
+        name: root
+        password: '{{mysql_pass}}'
+        state: present
+    - name: create database
+      mysql_db:
+        name: demodb
+        login_host: localhost
+        login_user: root
+        login_password: '{{mysql_pass}}'
+    - name: create users in mysql database and grant privilleges
+      mysql_user:
+        name: demo
+        login_user: root
+        login_password: '{{user_pass}}'
+        host: localhost
+        state: present
+        priv: "demodb.*:ALL"
