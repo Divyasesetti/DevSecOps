@@ -1,0 +1,26 @@
+MySQL Replication
+Replication means writing down of every change from source databse to one or more databases in a special file called binary log. By default replication is asynchronous 
+There are two types of threaded process in mysql replication . 
+1. I/O Thread
+2. SQL Thread.
+I/O Thread connects to source mysql instance and reads the binlog event and then copy to replica log in replicaserver 
+SQL Thread read events from relay log and then applies them to replica instance as fast as possible.
+Advantages
+Scale-out-solutions, Data Security, Analytics and Long distance data distribution are the few advantages of replication
+Configuring Replication
+MySQL supports different types of replication in which traditional method is based on replicating events from source binary log
+Newer method based on global transactional identifiers (GTID'S)
+Types of Synchronisation
+Replication in mysql support different types of synchronisation even though by default replication is asynchronous in which one server acts as source and other acts as replica
+Asynchronous replication is contrast to synchronous which is same like NDB cluster.
+Semisynchronous is supported in addition to the built-in asynchronous replication . semisynchronous replication supports delayed replication 
+Replication Format
+Two types of replication formats : 
+1. Statement based replication (SBR)
+2. Row Based replication (RBR)
+3. Mixed Based Replication (MBR)
+Replication Solutions
+Replication can solve different problems like performancesupporting backups of different databases and larger solution to alleviate system failues.
+
+
+
